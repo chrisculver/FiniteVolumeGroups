@@ -49,7 +49,7 @@ def int_matrix(m):
   res = [[0 for elem in row] for row in m]
   for i in range(len(m)):
     for j in range(len(m[0])):
-      res[i][j] = int(m[i][j])
+      res[i][j] = int(round(m[i][j]))
   return res
       
 
