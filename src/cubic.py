@@ -1,29 +1,70 @@
 import src.utilities as util
 import math
 
-class O(util.RotationGroup):
+## The octahedral group O.  The group elements are by default written down
+## in a 3 dimensional representation
+## To iterate through all the group elements do 
+##    'for elem in o.elements:'
+## or
+##    'for class,elems in o.conjugacy_classes.items():'
+##    '  for elem in elems'
+class O():
   def __init__(self):
-    # The identity
-    super().__init__()
 
-    # C2-xyz Rotations
-    self.generate_elements_from( util.rotation( [1,0,0], math.pi)  )
-    self.generate_elements_from( util.rotation( [0,1,0], math.pi)  )
-    self.generate_elements_from( util.rotation( [0,0,1], math.pi)  )
+    self.elements = util.generate_closed_elements([
+        # The identity
+        [[1,0,0],[0,1,0],[0,0,1]],
+        # C2-xyz Rotations
+        util.rotation( [1,0,0], math.pi),
+        util.rotation( [0,1,0], math.pi),
+        util.rotation( [0,0,1], math.pi),
+        # C4 Rotations
+        util.rotation( [1,0,0], math.pi/2.),
+        util.rotation( [0,1,0], math.pi/2.),
+        util.rotation( [0,0,1], math.pi/2.),
+        # C2-diagonal Rotations
+        util.rotation( [1,1,0], math.pi ),
+        util.rotation( [0,1,1], math.pi ),
+        # C3 rotations
+        util.rotation( [1,1,1], 2.*math.pi/3.)
+      ])
 
-    # C4 Rotations
-    self.generate_elements_from( util.rotation( [1,0,0], math.pi/2.)  )
-    self.generate_elements_from( util.rotation( [0,1,0], math.pi/2.)  )
-    self.generate_elements_from( util.rotation( [0,0,1], math.pi/2.)  )
+    self.conjugacy_classes = {
 
-    # C2-diagonal Rotations
-    self.generate_elements_from( util.rotation( [1,1,0], math.pi) )
-    self.generate_elements_from( util.rotation( [0,1,1], math.pi) )
-    
-    # C3 rotations
-    self.generate_elements_from( util.rotation( [1,1,1], 2.*math.pi/3.)  )
+        "E": [ [[1,0,0],[0,1,0],[0,0,1]] ],
 
-    # The conjugacy classes are closed
+        "C3": [ util.rotation( [1,1,1], 2.*math.pi/3.),
+                util.rotation( [-1,1,1], 2.*math.pi/3.),
+                util.rotation( [1,-1,1], 2.*math.pi/3.),
+                util.rotation( [1,1,-1], 2.*math.pi/3.),
+                util.rotation( [-1,-1,1], 2.*math.pi/3.),
+                util.rotation( [1,-1,-1], 2.*math.pi/3.),
+                util.rotation( [-1,1,-1], 2.*math.pi/3.),
+                util.rotation( [-1,-1,-1], 2.*math.pi/3.),
+              ],
+
+        "C2xyz": [ util.rotation( [1,0,0], math.pi),
+                   util.rotation( [0,1,0], math.pi),
+                   util.rotation( [0,0,1], math.pi), 
+                 ],
+      
+        "C2diag": [ util.rotation( [1,1,0], math.pi ),
+                    util.rotation( [1,-1,0], math.pi ), 
+                    util.rotation( [0,1,1], math.pi ), 
+                    util.rotation( [0,1,-1], math.pi ), 
+                    util.rotation( [1,0,1], math.pi ), 
+                    util.rotation( [1,0,-1], math.pi ),
+                  ],
+
+        "C4": [ util.rotation( [1,0,0], math.pi/2.),
+                util.rotation( [-1,0,0], math.pi/2.),
+                util.rotation( [0,1,0], math.pi/2.),
+                util.rotation( [0,-1,0], math.pi/2.),
+                util.rotation( [0,0,1], math.pi/2.), 
+                util.rotation( [0,0,-1], math.pi/2.), 
+              ]  
+    } # end of conjugacy class dictionary
+
 
 class Oh(O):
   def __init__(self):
@@ -32,4 +73,7 @@ class Oh(O):
     # this doubles the number of conjugacy classes, the original
     # conjugacy classes are parity(+)
     # this generates parity(-) classes
-    self.generate_elements_from( [[-1,0,0],[0,-1,0],[0,0,-1]] )
+    self.elements = util.generate_closed_elements(
+        self.elements +  
+        [ [[-1,0,0],[0,-1,0],[0,0,-1]] ] 
+      )

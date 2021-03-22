@@ -21,3 +21,4 @@ To run all the tests
 2. More tests
 3. Test character table using conjugacy classes for all irreps using
 symmetry.jacobs-university.de
+4. Does O2h also have integer matrix elements

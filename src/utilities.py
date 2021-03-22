@@ -4,32 +4,25 @@ import numpy as np
 from scipy.linalg import expm
 
 
-class RotationGroup:
-  def __init__(self):
-    self.elements = [ [[1,0,0],[0,1,0],[0,0,1]] ]
+#given a list of elements, apply rotations until the set is
+#closed
+def generate_closed_elements(elems):
+  res = copy.deepcopy(elems)
 
-  def generate_elements_from(self,rotation):  
-    adding_elements=True
-
+  for elem in elems:
+    adding_elements = True
     while(adding_elements):
-      original_elements = copy.deepcopy(self.elements)
-     
-      print("rotation = " + str(rotation))
-      for elem in self.elements:
-        print(elem)
-
-      for elem in self.elements:
-        if( matmul(rotation,elem) not in self.elements ):
-          self.elements.append( matmul(rotation,elem) )
-          # if we add an element from a rot, it may be that
-          # elem.rot.rot could be an element of the group.
-          # going through the loop again will check this
-          
-          # There's probably a shorter/better implementation using 
-          # that at some point elem.rot.rot.rot.rot = elem (it's a finite group)
-     
-      if( self.elements == original_elements ):
+      original_elements = copy.deepcopy(res)
+  
+      for r in res:
+        if( matmul(elem, r) not in res ):
+          res.append( matmul(elem, r) )
+      
+      if( res == original_elements ):
         adding_elements=False
+
+  return res
+
 
 #direction r and angle phi
 def rotation(r, phi):
@@ -45,6 +38,7 @@ def rotation(r, phi):
               + np.asarray(phi*r[2])*so3_generators[2])/norm_r ).tolist())
 
 
+# Converts a floating point matrix to a matrix of ints
 def int_matrix(m):
   res = [[0 for elem in row] for row in m]
   for i in range(len(m)):
@@ -53,6 +47,7 @@ def int_matrix(m):
   return res
       
 
+# I don't feel like making a matrix class to do x*y
 def matmul(x,y):
   z = [[0.,0.,0.],[0.,0.,0.],[0.,0.,0.]]
   

@@ -24,9 +24,11 @@ def test_rotations():
                               rotation([1.,0.,0.],math.pi)
                            )
 
-def test_generate_elements():
-  test = RotationGroup()
-  test.generate_elements_from([[1,0,0],[0,1,0],[0,0,1]])
+  assert [[1,0,0],[0,-1,0],[0,0,-1]] == rotation([1,0,0],math.pi)
 
-  assert test.elements == [ [[1,0,0],[0,1,0],[0,0,1]] ]
+def test_generate_closed_elements():
+  id_mat = [[1,0,0],[0,1,0],[0,0,1]]
+  elements = generate_closed_elements([id_mat])
+
+  assert elements == [ id_mat ]
   
