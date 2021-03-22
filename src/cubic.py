@@ -8,6 +8,9 @@ import math
 ## or
 ##    'for class,elems in o.conjugacy_classes.items():'
 ##    '  for elem in elems'
+##
+## WARNING: DO NOT ARBITRARILY CHANGE ORDER OF ELEMENTS
+## IRREP ORDER IS SAME AS ELEMENT ORDER 
 class O():
   def __init__(self):
 
@@ -64,6 +67,30 @@ class O():
                 util.rotation( [0,0,-1], math.pi/2.), 
               ]  
     } # end of conjugacy class dictionary
+
+
+    self.irreps = {
+        "A1": [ 1 for elem in self.elements ], 
+
+        "A2": [ self.compute_a2(elem) for elem in self.elements ],
+
+#        "E": [ self.compute_e(elem) for elem in self.elements ],
+
+        "T1": self.elements
+      }
+
+  def compute_a2(self, elem):
+    elem_in_clss = None
+    for clss, elems in self.conjugacy_classes.items():
+      if elems.count(elem)>0:
+        elem_in_clss = clss
+
+    if( (elem_in_clss == "C2diag" ) or 
+        (elem_in_clss == "C4") ):
+      return -1
+    else:
+      return 1
+
 
 
 class Oh(O):
