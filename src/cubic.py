@@ -1,106 +1,64 @@
 import src.utilities as util
 import math
 
-## The octahedral group O.  The group elements are by default written down
-## in a 3 dimensional representation
-## To iterate through all the group elements do 
-##    'for elem in o.elements:'
-## or
-##    'for class,elems in o.conjugacy_classes.items():'
-##    '  for elem in elems'
-##
-## WARNING: DO NOT ARBITRARILY CHANGE ORDER OF ELEMENTS
-## IRREP ORDER IS SAME AS ELEMENT ORDER 
+
+
 class O():
   def __init__(self):
+    self.elements = []
 
-    self.elements = util.generate_closed_elements([
-        # The identity
-        [[1,0,0],[0,1,0],[0,0,1]],
-        # C2-xyz Rotations
-        util.rotation( [1,0,0], math.pi),
-        util.rotation( [0,1,0], math.pi),
-        util.rotation( [0,0,1], math.pi),
-        # C4 Rotations
-        util.rotation( [1,0,0], math.pi/2.),
-        util.rotation( [0,1,0], math.pi/2.),
-        util.rotation( [0,0,1], math.pi/2.),
-        # C2-diagonal Rotations
-        util.rotation( [1,1,0], math.pi ),
-        util.rotation( [0,1,1], math.pi ),
-        # C3 rotations
-        util.rotation( [1,1,1], 2.*math.pi/3.)
-      ])
+    add_elems = lambda angle, directions, conj : [ 
+                  self.elements.append (self.make_group_element(angle, d, conj) ) 
+                  for d in directions ]
 
-    self.conjugacy_classes = {
+    e_angle = 0.
+    e_directions = [ [0,0,1] ]
+    add_elems(e_angle, e_directions, "E")
 
-        "E": [ [[1,0,0],[0,1,0],[0,0,1]] ],
+    c3_angle = 2.*math.pi/3.
+    c3_directions = [
+        [1,1,1],[1,-1,1],[1,-1,1],[1,1,-1],[-1,-1,1],[1,-1,-1],[-1,1,-1],[-1,-1,-1] ]
+    add_elems(c3_angle, c3_directions, "C3")
 
-        "C3": [ util.rotation( [1,1,1], 2.*math.pi/3.),
-                util.rotation( [-1,1,1], 2.*math.pi/3.),
-                util.rotation( [1,-1,1], 2.*math.pi/3.),
-                util.rotation( [1,1,-1], 2.*math.pi/3.),
-                util.rotation( [-1,-1,1], 2.*math.pi/3.),
-                util.rotation( [1,-1,-1], 2.*math.pi/3.),
-                util.rotation( [-1,1,-1], 2.*math.pi/3.),
-                util.rotation( [-1,-1,-1], 2.*math.pi/3.),
-              ],
+    c2xyz_angle = math.pi
+    c2xyz_directions = [ [1,0,0], [0,1,0], [0,0,1] ]
+    add_elems(c2xyz_angle, c2xyz_directions, "C2xyz")
 
-        "C2xyz": [ util.rotation( [1,0,0], math.pi),
-                   util.rotation( [0,1,0], math.pi),
-                   util.rotation( [0,0,1], math.pi), 
-                 ],
-      
-        "C2diag": [ util.rotation( [1,1,0], math.pi ),
-                    util.rotation( [1,-1,0], math.pi ), 
-                    util.rotation( [0,1,1], math.pi ), 
-                    util.rotation( [0,1,-1], math.pi ), 
-                    util.rotation( [1,0,1], math.pi ), 
-                    util.rotation( [1,0,-1], math.pi ),
-                  ],
+    c2diag_angle = math.pi
+    c2diag_directions = [ [1,1,0], [1,-1,0], [0,1,1], [0,1,-1], [1,0,1], [1,0,-1] ]
+    add_elems(c2diag_angle, c2diag_directions, "C2diag")
 
-        "C4": [ util.rotation( [1,0,0], math.pi/2.),
-                util.rotation( [-1,0,0], math.pi/2.),
-                util.rotation( [0,1,0], math.pi/2.),
-                util.rotation( [0,-1,0], math.pi/2.),
-                util.rotation( [0,0,1], math.pi/2.), 
-                util.rotation( [0,0,-1], math.pi/2.), 
-              ]  
-    } # end of conjugacy class dictionary
-
-
-    self.irreps = {
-        "A1": [ 1 for elem in self.elements ], 
-
-        "A2": [ self.compute_a2(elem) for elem in self.elements ],
-
-#        "E": [ self.compute_e(elem) for elem in self.elements ],
-
-        "T1": self.elements
-      }
-
-  def compute_a2(self, elem):
-    elem_in_clss = None
-    for clss, elems in self.conjugacy_classes.items():
-      if elems.count(elem)>0:
-        elem_in_clss = clss
-
-    if( (elem_in_clss == "C2diag" ) or 
-        (elem_in_clss == "C4") ):
-      return -1
-    else:
-      return 1
+    c4_angle = math.pi/2.
+    c4_directions = [ [1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1] ]
+    add_elems(c4_angle, c4_directions, "C4")
 
 
 
-class Oh(O):
-  def __init__(self):
-    super().__init__()
+  def make_group_element(self, angle, direction, conj_class):
+    return util.GroupElement( 
+        {"angle": angle, "direction": direction},
+        conj_class,
+        self.make_all_irreps(angle, direction, conj_class)
+      )
+
+
+  def make_all_irreps(self, angle, direction, conj_class):
+    return {
+          "A1": 1,
+          "A2": -1 if (conj_class == "C2diag") or (conj_class == "C4") else 1,
+          "T1": util.rotation(direction, angle)
+        }
+
+
+
+#class Oh(O):
+#  def __init__(self):
+#    super().__init__()
 
     # this doubles the number of conjugacy classes, the original
     # conjugacy classes are parity(+)
     # this generates parity(-) classes
-    self.elements = util.generate_closed_elements(
-        self.elements +  
-        [ [[-1,0,0],[0,-1,0],[0,0,-1]] ] 
-      )
+#    self.elements = util.generate_closed_elements(
+#        self.elements +  
+#        [ [[-1,0,0],[0,-1,0],[0,0,-1]] ] 
+#      )

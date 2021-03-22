@@ -4,6 +4,15 @@ import numpy as np
 from scipy.linalg import expm
 
 
+class GroupElement():
+  def __init__(self, identifier, conjugacy_class, irreps):
+    self.identifier = identifier
+    self.conjugacy_class = conjugacy_class
+    self.irreps = irreps
+
+  def __call__(self, irrep):
+    return irreps[irrep]
+
 #given a list of elements, apply rotations until the set is
 #closed
 def generate_closed_elements(elems):
