@@ -1,7 +1,19 @@
+from src.irrep import generate_irrep
+
 import copy
 import math
 import numpy as np
+from dataclasses import dataclass
+from typing import List
 from scipy.linalg import expm
+
+
+@dataclass
+class ElementGenerator:
+  conjucacy_class_name: str
+  angle: float
+  directions: List[List[int]]
+
 
 
 class GroupElement():
@@ -13,6 +25,35 @@ class GroupElement():
   def __call__(self, irrep):
     return irreps[irrep]
 
+
+
+class FiniteVolumeGroup():
+  def __init__(self, element_generators, irrep_generators):
+    self.elements = []
+    for elem in element_generators:
+      for direction in elem.directions:
+        self.elements.append( 
+            self.make_group_element(
+              elem.angle, direction, 
+              elem.conjucacy_class_name, 
+              irrep_generators)
+        )
+
+  def irrep(self, name):
+    return [ elem.irreps[name] for elem in self.elements]
+
+  def make_group_element(self, angle, direction, conj_class, irrep_generators):
+    return GroupElement( 
+        {"angle": angle, "direction": direction},
+        conj_class,
+        self.make_irreps(rotation(direction, angle), irrep_generators)
+      )
+
+  def make_irreps(self,elem, irrep_gen):
+    return {name: generate_irrep(elem, funcs) for name,funcs in irrep_gen.items()}
+
+
+#DEPRECATED
 #given a list of elements, apply rotations until the set is
 #closed
 def generate_closed_elements(elems):
@@ -35,7 +76,6 @@ def generate_closed_elements(elems):
 
 #direction r and angle phi
 def rotation(r, phi):
-  # TODO: CC doesn't know why they are negative
   so3_generators =  [ [[0.,0.,0.],[0.,0.,1.],[0.,-1.,0.]],
                       [[0.,0.,-1.],[0.,0.,0.],[1.,0.,0.]],
                       [[0.,1.,0.],[-1.,0.,0.],[0.,0.,0.]] ]
