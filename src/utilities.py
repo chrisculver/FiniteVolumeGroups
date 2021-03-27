@@ -8,11 +8,12 @@ from typing import List
 from scipy.linalg import expm
 
 
+
 @dataclass
 class ElementGenerator:
   conjucacy_class_name: str
   angle: float
-  directions: List[List[int]]
+  directions: List[List[int]]  # a list of 3vectors specifying the direction of the rotation
 
 
 
@@ -39,12 +40,9 @@ class FiniteVolumeGroup():
               irrep_generators)
         )
 
-  def irrep(self, name):
-    return [ elem.irreps[name] for elem in self.elements]
-
   def make_group_element(self, angle, direction, conj_class, irrep_generators):
     return GroupElement( 
-        {"angle": angle, "direction": direction},
+        {"angle": angle, "direction": direction, "parity": None},
         conj_class,
         self.make_irreps(rotation(direction, angle), irrep_generators)
       )
@@ -52,6 +50,9 @@ class FiniteVolumeGroup():
   def make_irreps(self,elem, irrep_gen):
     return {name: generate_irrep(elem, funcs) for name,funcs in irrep_gen.items()}
 
+
+  def irrep(self, name):
+    return [ elem.irreps[name] for elem in self.elements]
 
 #DEPRECATED
 #given a list of elements, apply rotations until the set is

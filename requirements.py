@@ -1,2 +1,4 @@
-coverage
+numpy
+scypy
 pytest
+coverage

@@ -39,7 +39,7 @@ def generate_irrep(elem, funcs):
     
     solution = sp.linsolve(coefficient_equations, *a).args
     
-#    print(solution)
+    #print(solution)
     
     return np.matrix([[ solution[0][i*dim+j] for i in range(dim)] for j in range(dim)]) 
 
