@@ -16,7 +16,7 @@ def test_o():
 def test_o_irreps():
   o = O()
 
-  # some quick checks
+  # some quick character checks
   assert sum(o.irrep("A1")) == 24
   assert sum(o.irrep("A2")) == 0
 
