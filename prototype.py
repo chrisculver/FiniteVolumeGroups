@@ -4,7 +4,7 @@ import numpy as np
 
 group = Oh()
 
-pi = sp.Function('f')
+pi = sp.Function('pion')
 parity = sp.Symbol('detR')
 char = sp.Symbol('chi')
 mom = sp.MatrixSymbol('p',3,1)
@@ -13,15 +13,16 @@ rot = sp.MatrixSymbol('R',3,3)
 expr = pi(rot*mom)
 
 seed = char*parity*pi(rot*mom)
+print('seed operator = ' + str(seed))
 
 for irrep in ['A1u','A1g']:
   tot = 0
   for elem in group.elements:
     values = {parity: elem.identifier['parity'], 
               mom: sp.Matrix([0,0,0]),
-              rot: elem.irreps['T1u'],
+              rot: sp.Matrix(elem.irreps['T1u']),
               char: elem.irreps[irrep][0,0]} # will implement characters or trace function
-    tot += seed.subs(values).doit()
+    tot += seed.subs(values).doit()/len(group.elements)
 
   print('Projection of pion to ' + irrep + ' = ' + str(tot))
 
