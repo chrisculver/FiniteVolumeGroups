@@ -1,4 +1,4 @@
-from src.cubic import Oh 
+from FiniteVolumeGroups.cubic import Oh 
 import sympy as sp
 import numpy as np
 
@@ -13,7 +13,7 @@ rot = sp.MatrixSymbol('R',3,3)
 expr = pi(rot*mom)
 
 seed = char*parity*pi(rot*mom)
-print('seed operator = ' + str(seed))
+print('seed operator = {}'.format(seed))
 
 for irrep in ['A1u','A1g']:
   tot = 0
@@ -24,7 +24,7 @@ for irrep in ['A1u','A1g']:
               char: elem.irreps[irrep][0,0]} # will implement characters or trace function
     tot += seed.subs(values).doit()/len(group.elements)
 
-  print('Projection of pion to ' + irrep + ' = ' + str(tot))
+  print('Projection of pion to {} = {}'.format(irrep,tot))
 
 
 #U(g) O U(g)^T
@@ -45,7 +45,3 @@ for irrep in ['A1u','A1g']:
 #T3 = < p | X + Y + Z | q > 
 #T3 -> < g['t1g'].vec | (X + Y + Z) | g['t1g'].vec, l, m> 
 #U(g) -> 
-
-
-
-

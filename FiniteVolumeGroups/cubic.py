@@ -1,4 +1,4 @@
-import src.utilities as util
+import FiniteVolumeGroups.utilities as util
 import numpy as np
 import math
 import copy

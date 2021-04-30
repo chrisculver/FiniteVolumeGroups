@@ -1,4 +1,4 @@
-from src.cubic import *
+from FiniteVolumeGroups.cubic import *
 
 def test_o():
   o = O()

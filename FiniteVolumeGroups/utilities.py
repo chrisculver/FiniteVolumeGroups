@@ -1,4 +1,4 @@
-from src.irrep import generate_irrep
+from FiniteVolumeGroups.irrep import generate_irrep
 
 import copy
 import math

@@ -1,4 +1,4 @@
-from src.utilities import *
+from FiniteVolumeGroups.utilities import *
 from pytest import approx
 import math
 

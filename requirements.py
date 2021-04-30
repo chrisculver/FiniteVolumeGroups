@@ -1,4 +1,4 @@
 numpy
-scypy
+sympy
 pytest
 coverage
