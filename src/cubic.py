@@ -73,7 +73,7 @@ class Oh(O):
       ids = elem.identifier
       ids["parity"] = -1
 
-      parity_rotation = np.matrix([[-1,0,0],[0,-1,0],[0,0,-1]])*util.rotation(ids["direction"],ids["angle"])
+      parity_rotation = np.matmul(np.array([[-1,0,0],[0,-1,0],[0,0,-1]]),util.rotation(ids["direction"],ids["angle"]))
 
       self.elements.append(
           util.GroupElement(
