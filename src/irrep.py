@@ -8,20 +8,27 @@ def generate_irrep(elem, funcs):
     #print(dim)
     a = [ sp.symbols('a'+str(i)) for i in range(dim*dim) ] # symbols needed for irrep  
     (x,y,z) = sp.symbols('x, y, z')
-    (xp,yp,zp) = elem*np.matrix([[x],[y],[z]])
-    xp=xp[0,0]
-    yp=yp[0,0]
-    zp=zp[0,0]
-    
-    irrep = np.matrix([[ a[i*dim + j] for i in range(dim) ] for j in range(dim) ])
-    func_vec = np.matrix([ [funcs[i](x,y,z)] for i in range(dim) ])
-    
-    func_rotated_vec = np.matrix([ [funcs[i](xp,yp,zp)] for i in range(dim) ])
+#    print(elem)
+#    print(np.array([x,y,z]))
+#    print(np.matmul(np.array(elem),np.array([x,y,z])))
+    (xp,yp,zp) = np.matmul(np.array(elem),np.array([x,y,z]))
+   
+#    print(xp)
+#    print(yp)
+#    print(zp)
 
-    equations = np.asarray(irrep*func_vec - func_rotated_vec).flatten()
-    #print(equations)
+    irrep = np.array([[ a[i*dim + j] for i in range(dim) ] for j in range(dim) ])
+    func_vec = np.array([ [funcs[i](x,y,z)] for i in range(dim) ])
+    
+#    print(irrep)
+#    print(func_vec)
+    func_rotated_vec = np.array([ [funcs[i](xp,yp,zp)] for i in range(dim) ])
+#    print(func_rotated_vec)
+
+    equations = np.asarray(np.matmul(irrep,func_vec) - func_rotated_vec).flatten()
+#    print(equations)
     equations = [sp.expand(eq) for eq in equations]
-    #print(equations)
+#    print(equations)
     
     coefficient_equations = []
     for eq in equations:
@@ -33,15 +40,14 @@ def generate_irrep(elem, funcs):
             coefficient_equations.append( eq.coeff(vary))
             coefficient_equations.append( eq.coeff(varz))
         
-    #print(coefficient_equations)
-    
-    #print(sp.linsolve(coefficient_equations, *a))
+#    print(coefficient_equations)   
+#    print(sp.linsolve(coefficient_equations, *a))
     
     solution = sp.linsolve(coefficient_equations, *a).args
     
-    #print(solution)
+#    print(solution)
     
-    return np.matrix([[ solution[0][i*dim+j] for i in range(dim)] for j in range(dim)]) 
+    return np.array([[ solution[0][i*dim+j] for i in range(dim)] for j in range(dim)]) 
 
 
 
