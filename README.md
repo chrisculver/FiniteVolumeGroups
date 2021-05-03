@@ -2,6 +2,10 @@
 
 This package constructs the finite-volume groups and irreps useful for lattice QCD calculations.
 
+To install the package you can type 'pip install -e .'. 
+
+Then you can use this like any other package, i.e. type 'import FiniteVolumeGroups as fvg'
+
 
 
 ## TESTS
