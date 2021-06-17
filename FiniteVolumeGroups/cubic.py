@@ -12,7 +12,7 @@ class O(util.FiniteVolumeGroup):
         
         util.ElementGenerator("C3", angle=2.*math.pi/3., 
           directions = [ 
-            [1,1,1],[1,-1,1],[1,-1,1],[1,1,-1],[-1,-1,1],[1,-1,-1],[-1,1,-1],[-1,-1,-1] 
+            [1,1,1],[-1,1,1],[1,-1,1],[1,1,-1],[-1,-1,1],[1,-1,-1],[-1,1,-1],[-1,-1,-1] 
           ]),
 
         util.ElementGenerator("C2xyz", angle=math.pi, 
