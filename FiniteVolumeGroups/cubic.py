@@ -6,22 +6,22 @@ import copy
 
 class O(util.FiniteVolumeGroup):
   def __init__(self):
-    
+
     element_generators = [
         util.ElementGenerator("E", 0., [ [0,0,1] ]),
-        
-        util.ElementGenerator("C3", angle=2.*math.pi/3., 
-          directions = [ 
-            [1,1,1],[-1,1,1],[1,-1,1],[1,1,-1],[-1,-1,1],[1,-1,-1],[-1,1,-1],[-1,-1,-1] 
+
+        util.ElementGenerator("C3", angle=2.*math.pi/3.,
+          directions = [
+            [1,1,1],[-1,1,1],[1,-1,1],[1,1,-1],[-1,-1,1],[1,-1,-1],[-1,1,-1],[-1,-1,-1]
           ]),
 
-        util.ElementGenerator("C2xyz", angle=math.pi, 
+        util.ElementGenerator("C2xyz", angle=math.pi,
           directions = [ [1,0,0], [0,1,0], [0,0,1] ]),
 
         util.ElementGenerator("C2diag", angle=math.pi,
           directions = [ [1,1,0], [1,-1,0], [0,1,1], [0,1,-1], [1,0,1], [1,0,-1] ]),
 
-        util.ElementGenerator("C4", angle=math.pi/2., 
+        util.ElementGenerator("C4", angle=math.pi/2.,
           directions = [ [1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1] ])
       ]
 
@@ -37,7 +37,7 @@ class O(util.FiniteVolumeGroup):
 
 
 
-    
+
 
 class Oh(O):
   def __init__(self):
@@ -46,9 +46,9 @@ class Oh(O):
     # add parity partner elements
     self.define_o_parity()
     self.add_parity_partners()
-    
+
     self.rename_o_irreps()
-    
+
     self.add_opposite_parity_irreps()
 
 
@@ -79,10 +79,11 @@ class Oh(O):
           util.GroupElement(
               ids,
               'i'+elem.conjugacy_class,
+              parity_rotation,
               self.make_irreps(parity_rotation, self.irrep_generators)
             )
         )
-   
+
   def add_opposite_parity_irreps(self):
     for elem in self.elements:
       irreps = elem.irreps

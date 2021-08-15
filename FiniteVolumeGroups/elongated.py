@@ -69,6 +69,7 @@ class D4h(D4):
                 util.GroupElement(
                     ids,
                     'i'+elem.conjugacy_class,
+                    parity_rotation,
                     self.make_irreps(parity_rotation, self.irrep_generators)
                 )
             )
