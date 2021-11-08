@@ -18,6 +18,8 @@ class ElementGenerator:
 
 
 class GroupElement():
+  """ A group element
+  """
   def __init__(self, identifier, conjugacy_class, rotation, irreps):
     self.identifier = identifier
     self.conjugacy_class = conjugacy_class
@@ -30,6 +32,9 @@ class GroupElement():
 
 
 class FiniteVolumeGroup():
+  """Base class for all finite volume groups.
+     Just holds the group elements in a list.
+  """
   def __init__(self, element_generators, irrep_generators):
     self.elements = []
     for elem in element_generators:

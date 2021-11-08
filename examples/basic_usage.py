@@ -1,6 +1,8 @@
-
 import FiniteVolumeGroups as fvg
+
+# Create the group Oh
 oh = fvg.cubic.Oh()
+
 # Get a group element, the first happens to be the identity
 identity = oh.elements[0]
   
