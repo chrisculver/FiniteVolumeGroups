@@ -25,7 +25,7 @@ class GroupElement():
     self.rotation = rotation
 
   def __call__(self, irrep):
-    return irreps[irrep]
+    return self.irreps[irrep]
 
 
 

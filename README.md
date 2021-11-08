@@ -1,19 +1,35 @@
 # README
 
-This package constructs the finite-volume groups and irreps useful for lattice QCD calculations.
+This package constructs the elements and irreps of finite volume groups.  
 
-To install the package you can type 'pip install -e .'. 
+## BASIC USAGE
 
-Then you can use this like any other package, i.e. type 'import FiniteVolumeGroups as fvg'
+To install the package in your python environment you can type 'pip install -e .'. 
+Then the following line should run 'import FiniteVolumeGroups as fvg'.
 
+How to access some of the most common data is provided in the following:
 
+```
+  import FiniteVolumeGroups as fvg
+  oh = fvg.cubic.Oh()
+  # Get a group element, the first happens to be the identity
+  identity = oh.elements[0]
+  
+  # How the group element rotates an object in 3-d space
+  print(identity.rotation)
+
+  # The irreps of the group
+  print(identity.irreps.keys())
+
+  # Get the rep matrix of an element in an irrep
+  irrep='A1g'
+  print(identity(irrep))
+  
+```
+
+For more advanced usage see finitevolumegroups.readthedocs.io
 
 ## TESTS
-It's important we have a set of rigorous tests, since the results are very
-well known, and we want this to be a black box after development. Anybody
-looking through the tests should really be confident that these are valid 
-tests. 
-
 To run all the tests 
 
     coverage run -m pytest
@@ -21,8 +37,5 @@ To run all the tests
 
 
 ## TODO
-1. Irreps
-2. More tests
-3. Test character table using conjugacy classes for all irreps using
-symmetry.jacobs-university.de
-4. Does O2h also have integer matrix elements
+1. Does O2h also have integer matrix elements
+2. C4v
