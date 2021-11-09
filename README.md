@@ -35,7 +35,3 @@ To run all the tests
     coverage run -m pytest
     coverage report -m 
 
-
-## TODO
-1. Does O2h also have integer matrix elements
-2. C4v
