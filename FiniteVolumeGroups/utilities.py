@@ -19,14 +19,28 @@ class ElementGenerator:
 
 class GroupElement():
   """ A group element
+
+      :ivar identifier: Dictionary of meta data
+      :ivar conjugacy_class: String
+      :ivar irreps: Dictionary of matrices
+      :ivar rotation: 3D representation matrix.
+
+      The identifier keys are 'angle', 'direction' and 'parity'.  
+      The angle and direction are for a rotation in 3D space. 
+      'parity' returns the parity of the rotation or None 
+      if the group has no parity rotations included.
   """
   def __init__(self, identifier, conjugacy_class, rotation, irreps):
-    self.identifier = identifier
-    self.conjugacy_class = conjugacy_class
-    self.irreps = irreps
+    self.identifier = identifier 
+    self.conjugacy_class = conjugacy_class 
+    self.irreps = irreps 
     self.rotation = rotation
 
   def __call__(self, irrep):
+    """ Gets the irrep of the group element
+      
+        :param irrep: String specifying the irrep
+    """
     return self.irreps[irrep]
 
 
@@ -34,9 +48,12 @@ class GroupElement():
 class FiniteVolumeGroup():
   """Base class for all finite volume groups.
      Just holds the group elements in a list.
+
+     If you want to make your own group it's best to 
+     look at cubic.py and replicate what is done there.
   """
   def __init__(self, element_generators, irrep_generators):
-    self.elements = []
+    self.elements = [] #: List of the group elements
     for elem in element_generators:
       for direction in elem.directions:
         self.elements.append(
@@ -46,6 +63,7 @@ class FiniteVolumeGroup():
               irrep_generators)
         )
 
+  # makes the group element
   def make_group_element(self, angle, direction, conj_class, irrep_generators):
     return GroupElement(
         {"angle": angle, "direction": direction, "parity": None},
@@ -53,12 +71,16 @@ class FiniteVolumeGroup():
         rotation(direction, angle),
         self.make_irreps(rotation(direction, angle), irrep_generators)
       )
-
+  
+  # fills in the irreps of that group element
   def make_irreps(self,elem, irrep_gen):
     return {name: generate_irrep(elem, funcs) for name,funcs in irrep_gen.items()}
 
-
   def irrep(self, name):
+    """ Returns the whole irrep for the group.
+        
+        :param name: String for the name of the irrep
+    """
     return [ elem.irreps[name] for elem in self.elements]
 
 #DEPRECATED
