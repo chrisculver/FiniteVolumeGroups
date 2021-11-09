@@ -23,7 +23,7 @@ The code is organized into two types of files.  The concrete implementations of 
 defined in :code:`cubic.py` and :code:`elongated.py`, which define the classes for the
 groups :math:`O, O_h, D_4, D_{4h}`.  The other files contain utility functions to generate 
 any finite-volume group from some defining information.  A more detailed description is
-given in `Group Generation Details`.
+given in :doc:`generation`.
 
 .. toctree::
    :maxdepth: 2

@@ -1,4 +1,6 @@
 Group element
 =============
 
-Insert some API auto docs?
+.. autoclass:: utilities.GroupElement
+   :members:
+   :undoc-members:
