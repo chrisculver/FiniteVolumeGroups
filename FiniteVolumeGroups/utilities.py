@@ -14,7 +14,7 @@ class ElementGenerator:
   conjucacy_class_name: str
   angle: float
   directions: List[List[int]]  # a list of 3vectors specifying the direction of the rotation
-
+  names: List[str]
 
 
 class GroupElement():
@@ -25,20 +25,20 @@ class GroupElement():
       :ivar irreps: Dictionary of matrices
       :ivar rotation: 3D representation matrix.
 
-      The identifier keys are 'angle', 'direction' and 'parity'.  
-      The angle and direction are for a rotation in 3D space. 
-      'parity' returns the parity of the rotation or None 
+      The identifier keys are 'angle', 'direction' and 'parity'.
+      The angle and direction are for a rotation in 3D space.
+      'parity' returns the parity of the rotation or None
       if the group has no parity rotations included.
   """
   def __init__(self, identifier, conjugacy_class, rotation, irreps):
-    self.identifier = identifier 
-    self.conjugacy_class = conjugacy_class 
-    self.irreps = irreps 
+    self.identifier = identifier
+    self.conjugacy_class = conjugacy_class
+    self.irreps = irreps
     self.rotation = rotation
 
   def __call__(self, irrep):
     """ Gets the irrep of the group element
-      
+
         :param irrep: String specifying the irrep
     """
     return self.irreps[irrep]
@@ -49,36 +49,36 @@ class FiniteVolumeGroup():
   """Base class for all finite volume groups.
      Just holds the group elements in a list.
 
-     If you want to make your own group it's best to 
+     If you want to make your own group it's best to
      look at cubic.py and replicate what is done there.
   """
   def __init__(self, element_generators, irrep_generators):
     self.elements = [] #: List of the group elements
     for elem in element_generators:
-      for direction in elem.directions:
+      for i,direction in enumerate(elem.directions):
         self.elements.append(
             self.make_group_element(
-              elem.angle, direction,
+              elem.names[i], elem.angle, direction,
               elem.conjucacy_class_name,
               irrep_generators)
         )
 
   # makes the group element
-  def make_group_element(self, angle, direction, conj_class, irrep_generators):
+  def make_group_element(self, name, angle, direction, conj_class, irrep_generators):
     return GroupElement(
-        {"angle": angle, "direction": direction, "parity": None},
+        {"name": name, "angle": angle, "direction": direction, "parity": None},
         conj_class,
         rotation(direction, angle),
         self.make_irreps(rotation(direction, angle), irrep_generators)
       )
-  
+
   # fills in the irreps of that group element
   def make_irreps(self,elem, irrep_gen):
     return {name: generate_irrep(elem, funcs) for name,funcs in irrep_gen.items()}
 
   def irrep(self, name):
     """ Returns the whole irrep for the group.
-        
+
         :param name: String for the name of the irrep
     """
     return [ elem.irreps[name] for elem in self.elements]

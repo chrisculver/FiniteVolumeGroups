@@ -6,18 +6,21 @@ import copy
 class D4(util.FiniteVolumeGroup):
     def __init__(self):
         element_generators = [
-            util.ElementGenerator("E", 0., [ [0,0,1] ]),
+            util.ElementGenerator("E", 0., [ [0,0,1] ], [ "E" ]),
 
             util.ElementGenerator("C4z", angle=math.pi/2.,
-                directions = [ [0,0,1],  [0,0,-1] ]),
+                directions = [ [0,0,1],  [0,0,-1] ],
+                names = [ "", "" ]),
 
-            util.ElementGenerator("C2z", math.pi, [ [0,0,1] ]),
+            util.ElementGenerator("C2z", math.pi, [ [0,0,1] ], [ "" ]),
 
             util.ElementGenerator("C2xy", angle=math.pi,
-                directions = [ [1,0,0], [0,1,0] ]),
+                directions = [ [1,0,0], [0,1,0] ],
+                names = [ "", "" ]),
 
             util.ElementGenerator("C2diag", angle=math.pi,
-                directions = [ [1,1,0], [-1,1,0] ])
+                directions = [ [1,1,0], [-1,1,0] ],
+                names = [ "", "" ])
         ]
 
         self.irrep_generators = {

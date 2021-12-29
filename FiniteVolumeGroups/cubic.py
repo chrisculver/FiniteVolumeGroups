@@ -7,22 +7,36 @@ import copy
 class O(util.FiniteVolumeGroup):
   def __init__(self):
 
+    # Names from Morningstar notes
+
     element_generators = [
-        util.ElementGenerator("E", 0., [ [0,0,1] ]),
+        util.ElementGenerator("E", angle=0.,
+          directions = [ [0,0,1] ],
+          names = [ "E" ]
+          ),
 
         util.ElementGenerator("C3", angle=2.*math.pi/3.,
           directions = [
             [1,1,1],[-1,1,1],[1,-1,1],[1,1,-1],[-1,-1,1],[1,-1,-1],[-1,1,-1],[-1,-1,-1]
+          ],
+          names = [
+            "C3delta","C3gamma-1","C3beta-1","C3alpha-1","C3alpha","C3gamma","C3beta","C3delta-1"
           ]),
 
         util.ElementGenerator("C2xyz", angle=math.pi,
-          directions = [ [1,0,0], [0,1,0], [0,0,1] ]),
+          directions = [ [1,0,0], [0,1,0], [0,0,1] ],
+          names = [ "C2x", "C2y", "C2z"]
+          ),
 
         util.ElementGenerator("C2diag", angle=math.pi,
-          directions = [ [1,1,0], [1,-1,0], [0,1,1], [0,1,-1], [1,0,1], [1,0,-1] ]),
+          directions = [ [1,1,0], [1,-1,0], [0,1,1], [0,1,-1], [1,0,1], [-1,0,1] ],
+          names = [ "C2a", "C2b", "C2e", "C2f", "C2c", "C2d"]
+          ),
 
         util.ElementGenerator("C4", angle=math.pi/2.,
-          directions = [ [1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1] ])
+          directions = [ [1,0,0], [-1,0,0], [0,1,0], [0,-1,0], [0,0,1], [0,0,-1] ],
+          names = [ "C4x", "C4x-1", "C4y", "C4y-1", "C4z", "C4z-1"]
+          )
       ]
 
     self.irrep_generators = {
