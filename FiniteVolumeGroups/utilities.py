@@ -66,7 +66,7 @@ class FiniteVolumeGroup():
   # makes the group element
   def make_group_element(self, name, angle, direction, conj_class, irrep_generators):
     return GroupElement(
-        {"name": name, "angle": angle, "direction": direction, "parity": None},
+        {"name": name, "angle": angle, "direction": direction, "parity": None, "spinor": None},
         conj_class,
         rotation(direction, angle),
         self.make_irreps(rotation(direction, angle), irrep_generators)
@@ -160,7 +160,7 @@ def g1_matrix(r, phi):
 
 
 def h_matrix(r, phi):
-    s32 = math.sqrt(3.)/math.sqrt(2.)
+    s32 = math.sqrt(3.)/2.
     spin32_generator = [ [[0,s32,0,0],[s32,0,1,0],[0,1,0,s32],[0,0,s32,0]],
                          [[0,-s32*1j,0,0],[s32*1j,0,-1j,0],[0,1j,0,-s32*1j],[0,0,s32*1j,0]],
                          [[3./2.,0,0,0],[0,1./2.,0,0],[0,0,-1./2.,0],[0,0,0,-3./2.]] ]

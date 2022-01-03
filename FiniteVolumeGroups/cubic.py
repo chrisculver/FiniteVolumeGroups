@@ -10,7 +10,7 @@ class O(util.FiniteVolumeGroup):
     # Names from Morningstar notes
 
     element_generators = [
-        util.ElementGenerator("E", angle=2.*math.pi,
+        util.ElementGenerator("E", angle=0.,
           directions = [ [0,0,1] ],
           names = [ "E" ]
           ),
@@ -56,9 +56,9 @@ class O2(O):
 
         new_elems = []
         for g in self.elements:
+            g.identifier["spinor"]=False
             new = copy.deepcopy(g)
-            if g.conjugacy_class not in ["C3","C4"]:
-                g.identifier['angle']+=2*math.pi
+            new.identifier['angle']+=2*math.pi
             new.identifier['spinor']=True
             new.rotation = util.rotation(new.identifier["direction"], new.identifier["angle"])
             if new.conjugacy_class not in ["C2xyz","C2diag"]:
@@ -69,10 +69,12 @@ class O2(O):
             self.elements.append(elem)
 
         for g in self.elements:
-            if g.conjugacy_class in ["C3bar","C4bar"]:
-                g.identifier["angle"]+=2*math.pi
             g.irreps["G1"]=util.g1_matrix(g.identifier["direction"], g.identifier["angle"])
             g.irreps["H"]=util.h_matrix(g.identifier["direction"], g.identifier["angle"])
+
+            if g.conjugacy_class=="Ebar":
+                g.irreps["H"]=util.h_matrix(g.identifier["direction"], 4*math.pi)
+
 
             g.irreps["G2"] = g.irreps["G1"]
 

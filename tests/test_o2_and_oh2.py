@@ -60,6 +60,7 @@ def test_o2_characters():
           print(elem.irreps[irrep])
           print(elem.identifier)
           print(char)
+          print(elem.irreps[irrep].trace())
           trace=complex(elem.irreps[irrep].trace())
           assert np.isclose(trace.real, char)
           assert np.isclose(trace.imag, 0.)
