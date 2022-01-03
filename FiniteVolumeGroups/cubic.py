@@ -10,7 +10,7 @@ class O(util.FiniteVolumeGroup):
     # Names from Morningstar notes
 
     element_generators = [
-        util.ElementGenerator("E", angle=0.,
+        util.ElementGenerator("E", angle=2.*math.pi,
           directions = [ [0,0,1] ],
           names = [ "E" ]
           ),
@@ -50,7 +50,36 @@ class O(util.FiniteVolumeGroup):
     super().__init__(element_generators, self.irrep_generators)
 
 
+class O2(O):
+    def __init__(self):
+        super().__init__();
 
+        new_elems = []
+        for g in self.elements:
+            new = copy.deepcopy(g)
+            if g.conjugacy_class not in ["C3","C4"]:
+                g.identifier['angle']+=2*math.pi
+            new.identifier['spinor']=True
+            new.rotation = util.rotation(new.identifier["direction"], new.identifier["angle"])
+            if new.conjugacy_class not in ["C2xyz","C2diag"]:
+                new.conjugacy_class += 'bar'
+            new_elems.append(new)
+
+        for elem in new_elems:
+            self.elements.append(elem)
+
+        for g in self.elements:
+            if g.conjugacy_class in ["C3bar","C4bar"]:
+                g.identifier["angle"]+=2*math.pi
+            g.irreps["G1"]=util.g1_matrix(g.identifier["direction"], g.identifier["angle"])
+            g.irreps["H"]=util.h_matrix(g.identifier["direction"], g.identifier["angle"])
+
+            g.irreps["G2"] = g.irreps["G1"]
+
+            if g.conjugacy_class in ["C4", "C4bar", "C2diag"]:
+                g.irreps["A2"] = -g.irreps["A1"]
+                g.irreps["T2"] = -g.irreps["T1"]
+                g.irreps["G2"] = -g.irreps["G1"]
 
 
 class Oh(O):

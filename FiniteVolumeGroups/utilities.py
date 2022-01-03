@@ -112,9 +112,13 @@ def rotation(r, phi):
 
   norm_r = math.sqrt(r[0]*r[0] + r[1]*r[1] + r[2]*r[2])
 
-  return int_matrix(expm( (np.asarray(phi*r[0])*so3_generators[0]
+  tmp = expm( (np.asarray(phi*r[0])*so3_generators[0]
               + np.asarray(phi*r[1])*so3_generators[1]
-              + np.asarray(phi*r[2])*so3_generators[2])/norm_r ).tolist())
+              + np.asarray(phi*r[2])*so3_generators[2])/norm_r ).tolist()
+
+  tmp = np.round(np.array(tmp),8)
+
+  return tmp.tolist()
 
 
 # Converts a floating point matrix to a matrix of ints
@@ -136,3 +140,37 @@ def matmul(x,y):
         z[i][j] += x[i][k]*y[k][j]
 
   return z
+
+
+
+def g1_matrix(r, phi):
+    pauli_matrices = [ [[0,1],[1,0]],
+                       [[0,-1j],[1j,0]],
+                       [[1,0],[0,-1]] ]
+
+    norm_r = math.sqrt(r[0]*r[0] + r[1]*r[1] + r[2]*r[2])
+
+    tmp = expm( -1j*(np.asarray(phi*r[0])*pauli_matrices[0]
+                + np.asarray(phi*r[1])*pauli_matrices[1]
+                + np.asarray(phi*r[2])*pauli_matrices[2])/(2.*norm_r) ).tolist()
+
+    tmp = np.round(np.array(tmp),8)
+
+    return tmp
+
+
+def h_matrix(r, phi):
+    s32 = math.sqrt(3.)/math.sqrt(2.)
+    spin32_generator = [ [[0,s32,0,0],[s32,0,1,0],[0,1,0,s32],[0,0,s32,0]],
+                         [[0,-s32*1j,0,0],[s32*1j,0,-1j,0],[0,1j,0,-s32*1j],[0,0,s32*1j,0]],
+                         [[3./2.,0,0,0],[0,1./2.,0,0],[0,0,-1./2.,0],[0,0,0,-3./2.]] ]
+
+    norm_r = math.sqrt(r[0]*r[0] + r[1]*r[1] + r[2]*r[2])
+
+    tmp = expm( -1j*(np.asarray(phi*r[0])*spin32_generator[0]
+            + np.asarray(phi*r[1])*spin32_generator[1]
+            + np.asarray(phi*r[2])*spin32_generator[2])/(2.*norm_r) ).tolist()
+
+    tmp = np.round(np.array(tmp),8)
+
+    return tmp
