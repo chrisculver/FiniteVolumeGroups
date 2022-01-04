@@ -72,9 +72,6 @@ class O2(O):
             g.irreps["G1"]=util.g1_matrix(g.identifier["direction"], g.identifier["angle"])
             g.irreps["H"]=util.h_matrix(g.identifier["direction"], g.identifier["angle"])
 
-            if g.conjugacy_class=="Ebar":
-                g.irreps["H"]=util.h_matrix(g.identifier["direction"], 4*math.pi)
-
 
             g.irreps["G2"] = g.irreps["G1"]
 
@@ -82,6 +79,8 @@ class O2(O):
                 g.irreps["A2"] = -g.irreps["A1"]
                 g.irreps["T2"] = -g.irreps["T1"]
                 g.irreps["G2"] = -g.irreps["G1"]
+
+            g.rotation = g.irreps["T1"]
 
 
 class Oh(O):
@@ -138,3 +137,26 @@ class Oh(O):
       irreps["Eu"]=parity*irreps["Eg"]
       irreps["T1g"]=parity*irreps["T1u"]
       irreps["T2u"]=parity*irreps["T2g"]
+
+
+
+class Oh2(O2):
+  def __init__(self):
+    super().__init__();
+
+    # add parity partner elements
+    self.define_o2_parity()
+    self.add_parity_partners()
+
+  def define_o2_parity(self):
+    for elem in self.elements:
+      ids = elem.identifier
+      ids["parity"] = 1
+
+
+  def add_parity_partners(self):
+    for elem in self.elements:
+      new = copy.deepcopy(elem)
+      new.parity = -1
+      new.rotation = np.matmul(np.array([[-1,0,0],[0,-1,0],[0,0,-1]]),new.rotation)
+      

@@ -169,7 +169,7 @@ def h_matrix(r, phi):
 
     tmp = expm( -1j*(np.asarray(phi*r[0])*spin32_generator[0]
             + np.asarray(phi*r[1])*spin32_generator[1]
-            + np.asarray(phi*r[2])*spin32_generator[2])/(2.*norm_r) ).tolist()
+            + np.asarray(phi*r[2])*spin32_generator[2])/(norm_r) ).tolist()
 
     tmp = np.round(np.array(tmp),8)
 
