@@ -140,13 +140,15 @@ class Oh(O):
 
 
 
-class Oh2(O2):
+class O2h(O2):
   def __init__(self):
     super().__init__();
 
     # add parity partner elements
     self.define_o2_parity()
     self.add_parity_partners()
+    self.rename_o2_irreps()
+    self.add_opposite_parity_irreps()
 
   def define_o2_parity(self):
     for elem in self.elements:
@@ -155,8 +157,49 @@ class Oh2(O2):
 
 
   def add_parity_partners(self):
+    origin_elements = copy.deepcopy(self.elements)
+    for elem in origin_elements:
+      ids = elem.identifier
+      ids["parity"] = -1
+
+      parity_rotation = np.matmul(np.array([[-1,0,0],[0,-1,0],[0,0,-1]]),util.rotation(ids["direction"],ids["angle"]))
+
+      g = util.GroupElement(
+              ids,
+              'i'+elem.conjugacy_class,
+              parity_rotation,
+              self.make_irreps(parity_rotation, self.irrep_generators)
+          )
+      g.irreps["G1"]=util.g1_matrix(g.identifier["direction"], g.identifier["angle"])
+      g.irreps["H"]=util.h_matrix(g.identifier["direction"], g.identifier["angle"])
+
+      g.irreps["G2"] = g.irreps["G1"]
+
+      if g.conjugacy_class in ["C4", "C4bar", "C2diag", "iC4", "iC4bar", "iC2diag"]:
+          g.irreps["A2"] = -g.irreps["A1"]
+          g.irreps["T2"] = -g.irreps["T1"]
+          g.irreps["G2"] = -g.irreps["G1"]
+
+      self.elements.append(g)
+
+  def rename_o2_irreps(self):
     for elem in self.elements:
-      new = copy.deepcopy(elem)
-      new.parity = -1
-      new.rotation = np.matmul(np.array([[-1,0,0],[0,-1,0],[0,0,-1]]),new.rotation)
-      
+      irreps = elem.irreps
+      irreps["A1g"]=irreps.pop("A1")
+      irreps["A2u"]=irreps.pop("A2")
+      irreps["Eg"]=irreps.pop("E")
+      irreps["T1u"]=irreps.pop("T1")
+      irreps["T2g"]=irreps.pop("T2")
+      irreps["G1x"]=irreps.pop("G1")
+      irreps["G2x"]=irreps.pop("G2")
+      irreps["Hx"]=irreps.pop("H")
+
+  def add_opposite_parity_irreps(self):
+    for elem in self.elements:
+      irreps = elem.irreps
+      parity = -1 if elem.conjugacy_class[0]=='i' else 1
+      irreps["A1u"]=parity*irreps["A1g"]
+      irreps["A2g"]=parity*irreps["A2u"]
+      irreps["Eu"]=parity*irreps["Eg"]
+      irreps["T1g"]=parity*irreps["T1u"]
+      irreps["T2u"]=parity*irreps["T2g"]
