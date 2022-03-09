@@ -190,7 +190,6 @@ class O2h(O2):
 
   def rename_o2_irreps(self):
     for elem in self.elements:
-<<<<<<< HEAD
       irreps = elem.irreps
       irreps["A1g"]=irreps.pop("A1")
       irreps["A2u"]=irreps.pop("A2")
@@ -210,9 +209,3 @@ class O2h(O2):
       irreps["Eu"]=parity*irreps["Eg"]
       irreps["T1g"]=parity*irreps["T1u"]
       irreps["T2u"]=parity*irreps["T2g"]
-=======
-      new = copy.deepcopy(elem)
-      new.parity = -1
-      new.rotation = np.matmul(
-        np.array([[-1, 0, 0], [0, -1, 0], [0, 0, -1]]), new.rotation)
->>>>>>> 933e3e2442738b90d05b71caa2374537ce9d7ee3
