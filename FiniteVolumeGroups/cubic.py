@@ -182,8 +182,9 @@ class O2h(O2):
       g.irreps["G2"] = g.irreps["G1"]
 
       if g.conjugacy_class in ["C4", "C4bar", "C2diag", "iC4", "iC4bar", "iC2diag"]:
-          g.irreps["A2"] = -g.irreps["A1"]
-          g.irreps["T2"] = -g.irreps["T1"]
+# self.make irreps correctly makes A2 and T2...
+#          g.irreps["A2"] = -g.irreps["A1"]
+#          g.irreps["T2"] = -g.irreps["T1"]
           g.irreps["G2"] = -g.irreps["G1"]
 
       self.elements.append(g)
@@ -196,9 +197,9 @@ class O2h(O2):
       irreps["Eg"]=irreps.pop("E")
       irreps["T1u"]=irreps.pop("T1")
       irreps["T2g"]=irreps.pop("T2")
-      irreps["G1x"]=irreps.pop("G1")
-      irreps["G2x"]=irreps.pop("G2")
-      irreps["Hx"]=irreps.pop("H")
+      irreps["G1g"]=irreps.pop("G1")
+      irreps["G2g"]=irreps.pop("G2")
+      irreps["Hg"]=irreps.pop("H")
 
   def add_opposite_parity_irreps(self):
     for elem in self.elements:
@@ -209,3 +210,6 @@ class O2h(O2):
       irreps["Eu"]=parity*irreps["Eg"]
       irreps["T1g"]=parity*irreps["T1u"]
       irreps["T2u"]=parity*irreps["T2g"]
+      irreps["G1u"]=parity*irreps["G1g"]
+      irreps["G2u"]=parity*irreps["G2g"]
+      irreps["Hu"]=parity*irreps["Hg"]
