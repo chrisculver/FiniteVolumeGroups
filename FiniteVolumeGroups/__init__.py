@@ -1,3 +1,4 @@
 import FiniteVolumeGroups.cubic
 import FiniteVolumeGroups.elongated
 import FiniteVolumeGroups.irrep
+import FiniteVolumeGroups.representation_checks
