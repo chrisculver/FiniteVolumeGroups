@@ -1,6 +1,22 @@
 import numpy as np
 
 
+def is_valid_rep(rep):
+  res = True
+  if not is_closed(rep):
+    res = False
+  if not is_associative(rep):
+    res = False
+  if not is_nonzero(rep):
+    res = False
+  if not has_identity(rep):
+    res = False
+  if not has_inverses(rep):
+    res = False
+
+  return res
+
+
 def is_closed(rep):
   res = True
   for g1 in rep:
