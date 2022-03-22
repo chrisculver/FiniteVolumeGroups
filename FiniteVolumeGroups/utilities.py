@@ -83,6 +83,13 @@ class FiniteVolumeGroup():
     """
     return [ elem.irreps[name] for elem in self.elements]
 
+  def get_element(self, name):
+    """ Returns the element with the matching string """
+    for elem in self.elements:
+      if elem.identifier['name']==name:
+        return elem
+    return None
+
 #DEPRECATED
 #given a list of elements, apply rotations until the set is
 #closed
