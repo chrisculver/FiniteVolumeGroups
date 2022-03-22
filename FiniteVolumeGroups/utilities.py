@@ -83,10 +83,10 @@ class FiniteVolumeGroup():
     """
     return [ elem.irreps[name] for elem in self.elements]
 
-  def get_element(self, name):
+  def get_element(self, name, parity=1, spinor=False):
     """ Returns the element with the matching string """
     for elem in self.elements:
-      if elem.identifier['name']==name:
+      if elem.identifier['name']==name and parity==elem.identifier['parity'] and spinor==elem.identifier['spinor']:
         return elem
     return None
 
