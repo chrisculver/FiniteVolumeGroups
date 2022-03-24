@@ -117,19 +117,11 @@ def test_o_reps():
   o = O()
   for name, irrep in o.elements[0].irreps.items():
     rep = [np.array(g.irreps[name], dtype=float) for g in o.elements]
-    assert(is_closed(rep))
-    assert(is_associative(rep))
-    assert(has_identity(rep))
-    assert(has_inverses(rep))
-    assert(is_nonzero(rep))
+    assert(is_valid_rep(rep))
 
 
 def test_oh_reps():
   oh = Oh()
   for name, irrep in oh.elements[0].irreps.items():
     rep = [np.array(g.irreps[name], dtype=float) for g in oh.elements]
-    assert(is_closed(rep))
-    assert(is_associative(rep))
-    assert(has_identity(rep))
-    assert(has_inverses(rep))
-    assert(is_nonzero(rep))
+    assert(is_valid_rep(rep))

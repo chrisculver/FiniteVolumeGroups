@@ -183,11 +183,7 @@ def test_o2_reps():
   for name, irrep in o2.elements[0].irreps.items():
     print("  testing for the {} irrep".format(name))
     rep = [np.array(g.irreps[name], dtype=complex) for g in o2.elements]
-    assert(is_closed(rep))
-    assert(is_associative(rep))
-    assert(has_identity(rep))
-    assert(has_inverses(rep))
-    assert(is_nonzero(rep))
+    assert(is_valid_rep(rep))
 
 
 def test_o2h_reps():
@@ -195,8 +191,4 @@ def test_o2h_reps():
   for name, irrep in o2h.elements[0].irreps.items():
     print("  testing for the {} irrep".format(name))
     rep = [np.array(g.irreps[name], dtype=complex) for g in o2h.elements]
-    assert(is_closed(rep))
-    assert(is_associative(rep))
-    assert(has_identity(rep))
-    assert(has_inverses(rep))
-    assert(is_nonzero(rep))
+    assert(is_valid_rep(rep))

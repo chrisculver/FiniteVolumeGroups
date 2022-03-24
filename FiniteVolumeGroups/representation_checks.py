@@ -3,8 +3,6 @@ import numpy as np
 
 def is_valid_rep(rep):
   res = True
-  if not is_nonzero(rep):
-    res = False
   if not has_identity(rep):
     res = False
   if not is_closed(rep):
@@ -64,14 +62,4 @@ def has_inverses(rep):
       if not has_inverse:
           res = False
           raise AssertionError("rep missing inverse for element {}".format(i1))
-  return res
-
-
-def is_nonzero(rep):
-  res = True
-  zero = np.zeros((len(rep[0]), len(rep[0])))
-  for i, g in enumerate(rep):
-    if np.allclose(g, zero):
-      res = False
-      raise AssertionError("element {} is zero, aka non-invertible".format(i))
   return res

@@ -17,7 +17,7 @@ To run all the tests
     coverage run -m pytest
     coverage report -m
 
-Checking that every irrep is valid is very time consuming...
+Running all of the tests takes about 10 minutes on my desktop, the longest test by far is testing the validity of all the irreps.  
 
 The tests include
   1. Checks group has correct number of elements
@@ -28,7 +28,3 @@ The tests include
      b. associative
      c. has identity
      d. has inverse
-     e. no rep elements are matrix of zeros.  
-
-Note that step e was done so I don't have to solve for matrix inverses... but I have to
-think about whether or not this is valid...

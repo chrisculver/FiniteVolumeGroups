@@ -111,19 +111,11 @@ def test_d4_reps():
   d4 = D4()
   for name, irrep in d4.elements[0].irreps.items():
     rep = [np.array(g.irreps[name], dtype=float) for g in d4.elements]
-    assert(is_closed(rep))
-    assert(is_associative(rep))
-    assert(has_identity(rep))
-    assert(has_inverses(rep))
-    assert(is_nonzero(rep))
+    assert(is_valid_rep(rep))
 
 
 def test_d4h_reps():
   d4h = D4h()
   for name, irrep in d4h.elements[0].irreps.items():
     rep = [np.array(g.irreps[name], dtype=float) for g in d4h.elements]
-    assert(is_closed(rep))
-    assert(is_associative(rep))
-    assert(has_identity(rep))
-    assert(has_inverses(rep))
-    assert(is_nonzero(rep))
+    assert(is_valid_rep(rep))
